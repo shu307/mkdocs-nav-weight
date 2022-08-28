@@ -6,7 +6,7 @@ setup(
     name='mkdocs-nav-weight',
     version='0.0.1',
     author='shu307',
-    description='A mkdocs plugin, enable to sort nav by set a "weight" in markdown metadata',
+    description='A simple mkdocs plugin, enable to sort nav by setting "weight" in markdown metadata',
     license='MIT',
     packages=find_packages(),
     install_requires=[
