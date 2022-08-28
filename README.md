@@ -6,10 +6,9 @@
 
 ## Install
 
-I  don't know how to package, so let it be:
 
 ```shell
-pip install git+https://github.com/shu307/mkdocs-nav-weight
+pip install mkdocs-nav-weight
 ```
 
 `mkdocs.yml`
