@@ -18,7 +18,7 @@ setup(
     include_package_data=True,
     entry_points={
         'mkdocs.plugins': [
-            'mkdocs-nav-weight = mkdocs-nav-weight:MkDocsNavWeight'
+            'mkdocs-nav-weight = mkdocs_nav_weight:MkDocsNavWeight'
         ]
     },
 )
