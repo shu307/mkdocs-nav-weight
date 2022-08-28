@@ -22,24 +22,6 @@ plugins:
 
 
 ## Intro
-
-A document tree like this:
-```
-│  bar.md
-│  foo.md
-│
-├─have_index_folder
-│  │  another.md
-│  │  index.md
-│  │
-│  └─level2
-│          another.md
-│          bar.md
-│          foo.md
-│
-└─no_index_folder
-        alone.md
-```
 Markdown metadata like this:
 > **Note, try not to forget the `space` between `weight:` and `number`, sometimes it causes bugs, I use mkdocs its own way to get metadata, and I'm not a proficient pythoner, so I don't know how to fix it.**
 ```csharp
@@ -47,44 +29,39 @@ foo.md
 ---
 title: foo
 weight: 4
----
 ...
-
-bar.md  // no "weight", default = 0
----
-title: bar
----
-...
-
-index.md 
----
-title: index
-weight: 3
----
-...
-
-another.md
----
-title: another
-weight: 1
----
-...
-
-alone.md
----
-title: alone
-weight: 2
 ---
 ```
+In the following, it is directly expressed as:
+```csharp
+foo.md // 4
+```
 
-Get a nav like this:
+A document tree like this:
+```csharp
+│  bar.md // no “weight”
+│  foo.md // 4
+│
+├─have_index_folder
+│  │  another.md // 1
+│  │  index.md // 3
+│  │
+│  └─level2
+│          another.md // 1
+│          bar.md  // 0
+│          foo.md  // 4
+│
+└─no_index_folder
+        alone.md // 2
+```
+You will get a nav like this:
 
 ```c#
 bar  // 0: no 'weight', default 0
-No index folder  // 0: will not get weight from 'alone', so it's defalut 0
+No index folder  // 0: cann't find a 'index', so it's defalut 0
 	alone  // 2
 Have index folder  // 3: get from 'index'
-	index  // 3: but as 0 in same level
+	index  // 0: it's 3 but as 0 in same level
     	Level2 // 0: no index, default 0
 		bar // 0
 		another // 1
