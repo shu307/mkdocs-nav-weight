@@ -1,5 +1,5 @@
+from warnings import catch_warnings
 import mkdocs
-
 
 
 class MkDocsNavWeight(mkdocs.plugins.BasePlugin):
@@ -16,11 +16,12 @@ class MkDocsNavWeight(mkdocs.plugins.BasePlugin):
                 item.read_source(config)
 
     def _get_page_weight(self, page):
-        # exist key 'weight'
-        if page.meta and page.meta['weight']:
+        try:
+            # exist key 'weight'
             return page.meta['weight']
-        # no key
-        return 0
+        except:
+            # no key
+            return 0
 
     def _get_weight(self, element):
         # is a page and not index
@@ -35,23 +36,20 @@ class MkDocsNavWeight(mkdocs.plugins.BasePlugin):
         # a link or index or no index section
         return 0
 
-    def _sort_by_weight(self, element, is_nav):
-
-        if is_nav:
-            enumerable = element.items
-        else:
-            enumerable = element.children
-        
-        enumerable.sort(key=self._get_weight, reverse=False)
-        for item in enumerable:
+    def _sort_by_weight(self, element):
+        element.children.sort(key=self._get_weight, reverse=False)
+        for item in element.children:
             if item.is_section:
-                self._sort_by_weight(item, False)
+                self._sort_by_weight(item)
 
     def on_nav(self, nav, config, files, **kwargs):
 
         # set meta
         self._set_meta(nav, config)
         # sort nav
-        self._sort_by_weight(nav, True)
-        # print(nav)
+        nav.items.sort(key=self._get_weight, reverse=False)
+        for item in nav.items:
+            if item.is_section:
+                self._sort_by_weight(item)
+
         return nav
