@@ -83,12 +83,12 @@ Get nav like this:
 bar  // 0
 No index folder  // 0: will not get weight from 'alone', so it's defalut 0
 	alone  // 2
-Have index folder  // 3: get from 'Index'
-	Index  // 3: but as 0 in same level
-    Level2 // 0: default
-    	bar // 0
-    	another // 1
-    	foo // 4
+Have index folder  // 3: get from 'index'
+	index  // 3: but as 0 in same level
+    	Level2 // 0: default
+		bar // 0
+		another // 1
+		foo // 4
 	another  // 1
 foo  // 4
 ```
