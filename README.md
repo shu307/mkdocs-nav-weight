@@ -1,8 +1,8 @@
 # mkdocs-nav-weight
 
 > **A simple mkdocs plugin, enable to sort nav by setting "weight" in markdown metadata** </br>
-> **I'm only sure it's runnable, not sure if it works (at least it does in my local docs). Only the compatibility of `section`, `index` and `page` has been considered, but not others such as "homepage".** </br>
-> **mkdocs get `nav` first, and then reads markdown resource to `page,` so using this plugin means reading markdown source twice, which may introduce performance problems**
+> **I'm only sure it's runnable, not sure if it works (at least it does in my local docs). Only the compatibility of `section`, `index` and `page` has been considered.** </br>
+> **mkdocs get `nav` first, and then reads markdown resource to `page`, so using this plugin means reading markdown source twice, which may introduce performance problems**
 
 ## Install
 
