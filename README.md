@@ -48,7 +48,7 @@ A document tree like this:
 │  │
 │  └─level2
 │          another.md // 1
-│          bar.md  // 0
+│          bar.md  // no “weight”
 │          foo.md  // 4
 │
 └─no_index_folder
