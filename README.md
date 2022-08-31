@@ -1,7 +1,7 @@
 # mkdocs-nav-weight
 
 > **A simple mkdocs plugin, enable to sort nav by setting "weight" in markdown metadata** </br>
-> **I'm only sure it's runnable, not sure if it works (at least it does in my local docs). Only the compatibility of `section`, `index` and `page` has been considered.** </br>
+> **Not sure if it works (at least it does in my local docs). Only the compatibility of `section`, `index` and `page` has been considered.** </br>
 > **mkdocs get `nav` first, and then reads markdown resource to `page`, so using this plugin means reading markdown source twice, which may introduce performance problems**
 
 ## Install
@@ -19,11 +19,8 @@ plugins:
   - mkdocs-nav-weight
 ```
 
-
-
 ## Intro
 Markdown metadata like this:
-> **Note, try not to forget the `space` between `weight:` and `number`, sometimes it causes bugs, I use mkdocs its own way to get metadata, and I'm not a proficient pythoner, so I don't know how to fix it.**
 ```csharp
 foo.md
 ---
@@ -32,7 +29,8 @@ weight: 4
 ...
 ---
 ```
-In the following, it is directly expressed as:
+
+In the following, it is simply expressed as:
 ```csharp
 foo.md // 4
 ```

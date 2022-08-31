@@ -1,3 +1,4 @@
+from numbers import Number
 from warnings import catch_warnings
 import mkdocs
 
@@ -17,10 +18,16 @@ class MkDocsNavWeight(mkdocs.plugins.BasePlugin):
 
     def _get_page_weight(self, page):
         try:
-            # exist key 'weight'
-            return page.meta['weight']
+            # exist 'weight'
+            # seems "isinstance" has an exception handling
+            if isinstance(page.meta['weight'], Number):
+                return page.meta['weight']
+            else:
+                print(f"[mkdocs-nav-weight]Warning: Invaild value for 'weight' in {page}, setting to 0")
+                return 0
         except:
-            # no key
+            # no `weight`
+            print(f"[mkdocs-nav-weight]Warning: No 'weight' in {page}, setting to 0")
             return 0
 
     def _get_weight(self, element):
