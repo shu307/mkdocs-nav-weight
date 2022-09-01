@@ -1,9 +1,15 @@
 # mkdocs-nav-weight
 
 > **A simple mkdocs plugin, enable to sort nav by setting "weight" in markdown metadata** </br>
-> **Not sure if it works (at least it does in my local docs). Only the compatibility of `section`, `index` and `page` has been considered.** </br>
-> **mkdocs get `nav` first, and then reads markdown resource to `page`, so using this plugin means reading markdown source twice, which may introduce performance problems**
+> **Not sure if it works (at least it does in my local docs).**</br>
+> **mkdocs get `nav` first, and then reads markdown resource to `page`. This plugin try to read markdown resource before the mkdocs do it, so using this plugin may introduce performance problems**
+## How it works
+Get the `weight` of each child of the folder (`section`): 
+- if it is a `page`, try to get its value, if the value is invalid, return 0;
+- if it is a folder (`section`), then try to get the value from the child of its children wich is a `page` and `isindex=true`, if it is not found or the value is invalid, returns 0. </br>
+- sort these children by `weight`.
 
+Recursively all folders starting from `docs`
 ## Install
 
 
@@ -19,7 +25,7 @@ plugins:
   - mkdocs-nav-weight
 ```
 
-## Intro
+## Example
 Markdown metadata like this:
 ```csharp
 foo.md
