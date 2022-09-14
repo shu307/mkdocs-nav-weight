@@ -42,7 +42,7 @@ plugins:
 ```
 
 - `section_renamed`, default `false`:
-    - If `true`, section name will use the `title` of its `index` instead of the folder name. (For compatibility we have to name a folder like "c#" as "csharp", but waht we actually want to see in the page is "c#" , that's what this option does)
+    - If `true`, section name will use the `title` of its `index` instead of the folder name. (For compatibility we have to name a folder like "c#" as "csharp", but what we actually want to see in the page is "c#" , that's what this option does)
 - `reverse`, default `false`:
     - If `true`, sort `nav` by `weight` from largest to smallest.
 
