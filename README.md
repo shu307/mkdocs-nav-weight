@@ -1,15 +1,19 @@
 # mkdocs-nav-weight
 
-> **A simple mkdocs plugin, enable to sort nav by setting "weight" in markdown metadata** </br>
-> **Not sure if it works (at least it does in my local docs).**</br>
-> **mkdocs get `nav` first, and then reads markdown resource to `page`. This plugin try to read markdown resource before the mkdocs do it, so using this plugin may introduce performance problems**
+> **A simple mkdocs plugin, enable to sort nav by setting "weight" in markdown metadata** 
+>
+> **Not sure if it works (at least it does in my local docs).**
+>
+> **This plugin tries to read markdown resources before mkdocs, which may add some performance overhead**
 ## How it works
+
 Get the `weight` of each child of the folder (`section`): 
-- if it is a `page`, try to get its value, if the value is invalid, return 0;
-- if it is a folder (`section`), then try to get the value from the child of its children wich is a `page` and `isindex=true`, if it is not found or the value is invalid, returns 0. </br>
+- if it is a `page`, try to get its value,  return 0 on failure.
+- if it is a folder (`section`), then try to get the value from the child wich `isindex=true`, return 0 on failure.
 - sort these children by `weight`.
 
-Recursively all folders starting from `docs`
+Recursively all folders starting from `docs`.
+
 ## Install
 
 
@@ -25,7 +29,25 @@ plugins:
   - mkdocs-nav-weight
 ```
 
+## Options
+
+`mkdocs.yml`
+
+```yaml
+plugins:
+    - search
+    - mkdocs-nav-weight:
+        section_renamed: false
+        reverse: false
+```
+
+- `section_renamed`, default `false`:
+    - If `true`, section name will use the `title` of its `index` instead of the folder name. (For compatibility we have to name a folder like "c#" as "csharp", but waht we actually want to see in the page is "c#" , that's what this option does)
+- `reverse`, default `false`:
+    - If `true`, sort `nav` by `weight` from largest to smallest.
+
 ## Example
+
 Markdown metadata like this:
 ```csharp
 foo.md
