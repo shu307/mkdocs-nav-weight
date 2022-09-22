@@ -9,7 +9,7 @@
 
 Get the `weight` of each child of the folder (`section`): 
 - if it is a `page`, try to get its value,  return 0 on failure.
-- if it is a folder (`section`), then try to get the value from the child wich `isindex=true`, return 0 on failure.
+- if it is a folder (`section`), then try to get the value from the child which `isindex=true`, return 0 on failure.
 - sort these children by `weight`.
 
 Recursively all folders starting from `docs`.

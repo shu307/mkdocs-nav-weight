@@ -13,6 +13,8 @@ class MkDocsNavWeight(mkdocs.plugins.BasePlugin):
     _is_section_renamed = False
     _is_reverse = False
 
+    _previous_page = None
+
     # add markdown and meta to page
     def _set_meta(self, element, config):
         for item in element:
@@ -60,11 +62,19 @@ class MkDocsNavWeight(mkdocs.plugins.BasePlugin):
         # a link or index or no index section
         return 0
 
-    def _sort_by_weight(self, element):
-        element.children.sort(key=self._get_weight, reverse=self._is_reverse)
-        for item in element.children:
-            if item.is_section:
-                self._sort_by_weight(item)
+    def _sort_by_weight(self, items):
+        items.sort(key=self._get_weight, reverse=self._is_reverse)
+        for item in items:
+            if item.is_page:
+                if self._previous_page:
+                    # set last page's `next_page` to this page
+                    self._previous_page.next_page = item
+                    # set this page's `previous_page` to last page
+                    item.previous_page = self._previous_page
+                # set next `_previous_page` to this page
+                self._previous_page = item
+            elif item.is_section:
+                self._sort_by_weight(item.children)
 
     # get option
     def on_pre_build(self, config, **kwargs):
@@ -75,10 +85,8 @@ class MkDocsNavWeight(mkdocs.plugins.BasePlugin):
     def on_nav(self, nav, config, files, **kwargs):
         # set meta
         self._set_meta(nav, config)
+
         # sort nav
-        nav.items.sort(key=self._get_weight, reverse=self._is_reverse)
-        for item in nav.items:
-            if item.is_section:
-                self._sort_by_weight(item)
+        self._sort_by_weight(nav.items)
 
         return nav
