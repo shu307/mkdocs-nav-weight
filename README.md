@@ -1,27 +1,40 @@
 # mkdocs-nav-weight
 
-> **A simple mkdocs plugin, enable to sort nav by setting "weight" in markdown metadata** 
->
-> **Not sure if it works (at least it does in my local docs).**
->
-> **This plugin tries to read markdown resources before mkdocs, which may add some performance overhead**
-## How it works
+**A simple mkdocs plugin, enables to organize Navigation in a more markdownic way.** 
 
-Get the `weight` of each child of the folder (`section`): 
-- if it is a `page`, try to get its value,  return 0 on failure.
-- if it is a folder (`section`), then try to get the value from the child which `isindex=true`, return 0 on failure.
-- sort these children by `weight`.
+> **This plugin tries to read markdown resources before mkdocs, which may add some performance overhead on building.**
 
-Recursively all folders starting from `docs`.
+## Usage
 
-## Install
+Three additional keys can be configured in Markdown Metadata ( also known as "front-matter", see [metadata](https://www.mkdocs.org/user-guide/writing-your-docs/#meta-data)):
+
+- `weight: number`
+    - **value: number, eg: `-1`, `2.3` ..., if unset, it goes `0`**.
+    - like weight in Hugo but has some differences, used for ordering your sections/pages. Lower weight gets higher precedence. So content with lower weight will come first. 
+    - **`weight` in an `index` will be offered to its parent `section`**, there is a fixed value for itself, and the value is configurable, see: [index_weight](#index_weight).
+
+- `headless: bool`
+    - **value: bool, `true` or `false`, if unset, it goes `false`**.
+    - like headless in Hugo, pages/sections with `headless: true` will be hidden from nav, but these contents will still be rendered and accessible via URL.
+    - **`headless` in an `index` will be offered to its parent `section`, too**
+
+- `section: bool`
+    - **value: bool, `true` or `false`, if unset, it goes `false`**.
+    - For `index` only.
+    - If there is an `index` only used to offer metadata for its parent `section` and without any meaningful content, setting `section` to `true` can help you to hide this `index` itself.
+
+
+
+## Installation
+
+Install with `pip`:
 
 
 ```shell
 pip install mkdocs-nav-weight
 ```
 
-`mkdocs.yml`
+Add the following lines to `mkdocs.yml`
 
 ```yaml
 plugins:
@@ -31,68 +44,38 @@ plugins:
 
 ## Options
 
-`mkdocs.yml`
+Setting in `mkdocs.yml`:
 
 ```yaml
 plugins:
-    - search
-    - mkdocs-nav-weight:
-        section_renamed: false
-        reverse: false
+  - search
+  - mkdocs-nav-weight:
+      section_renamed: false
+      index_weight: -10
+      warning: true
+      reverse: false
 ```
 
-- `section_renamed`, default `false`:
-    - If `true`, section name will use the `title` of its `index` instead of the folder name. (For compatibility we have to name a folder like "c#" as "csharp", but what we actually want to see in the page is "c#" , that's what this option does)
-- `reverse`, default `false`:
-    - If `true`, sort `nav` by `weight` from largest to smallest.
+### `section_renamed`
 
-## Example
+Default: `false`:
 
-Markdown metadata like this:
-```csharp
-foo.md
----
-title: foo
-weight: 4
-...
----
-```
+- If `true`, section name will use the `title` of its `index` instead of the folder name. 
 
-In the following, it is simply expressed as:
-```csharp
-foo.md // 4
-```
+- For compatibility we have to name a folder like "C#" as "CSharp", but what we actually want is "C#" , that's what this option does
 
-A document tree like this:
-```csharp
-│  bar.md // no “weight”
-│  foo.md // 4
-│
-├─have_index_folder
-│  │  another.md // 1
-│  │  index.md // 3
-│  │
-│  └─level2
-│          another.md // 1
-│          bar.md  // no “weight”
-│          foo.md  // 4
-│
-└─no_index_folder
-        alone.md // 2
-```
-You will get a nav like this:
+### `index_weight`
 
-```c#
-bar  // 0: no 'weight', default 0
-No index folder  // 0: cann't find a 'index', so it's defalut 0
-	alone  // 2
-Have index folder  // 3: get from 'index'
-	index  // 0: it's 3 but as 0 in same level
-    	Level2 // 0: no index, default 0
-		bar // 0
-		another // 1
-		foo // 4
-	another  // 1
-foo  // 4
-```
+Default: `-10`:
 
+- The `weight` value for `index` itself, to ensure it's always the first at the same level
+
+### `warning`
+
+Default: `true`:
+
+- Controls whether to send a `Warning` when invalid values are detected in markdown metadata
+
+### `reverse`
+
+- If `true`, sort nav by `weight` from largest to smallest.

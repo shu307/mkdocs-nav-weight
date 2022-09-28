@@ -5,7 +5,7 @@ with open("README.md", "r", encoding='utf-8') as fh:
 
 setup(
     name='mkdocs-nav-weight',
-    version='0.0.4',
+    version='0.0.5',
     author='shu307',
     author_email="shu307@qq.com",
     description='A simple mkdocs plugin, enable to sort nav by setting "weight" in markdown metadata',
