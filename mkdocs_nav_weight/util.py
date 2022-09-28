@@ -52,10 +52,10 @@ class Util():
                         if self._is_section_renamed:
                             item.parent.title = item.title
                         # check "section_title" only if "section_renamed" is false
-                        elif self._get_page_meta("section_title", False, bool, item):
+                        elif self._get_page_meta("retitled", False, bool, item):
                             item.parent.title = item.title
 
-                        if self._get_page_meta("section", False, bool, item):
+                        if self._get_page_meta("empty", False, bool, item):
                             self._to_delete_items.append(item)
                         if self._get_page_meta("headless", False, bool, item):
                             self._to_delete_items.append(item.parent)

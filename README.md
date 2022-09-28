@@ -20,13 +20,13 @@ Four additional keys can be configured in Markdown Metadata ( also known as "fro
 
 **For `index` only:**
 
-- `section: bool`
-    - **Value: bool, `true` or `false`, if unset, it goes `false`**.
-    - If there is an `index` only used to offer metadata for its parent `section` and without any meaningful content, setting `section` to `true` can help you to hide this `index` itself.
-
-- `section_title: bool`
+- `retitled: bool`
     - **Value: bool, `true` or `false`, if unset, it goes `false`**.
     - A metadata version of [`section_renamed`](#section_renamed) which only applies this `index`'s title to its parent `section`, **it only works when `section_renamed` is `false`**.
+
+- `empty: bool`
+    - **Value: bool, `true` or `false`, if unset, it goes `false`**.
+    - If there is an `index` only used to offer metadata for its parent `section` and without any meaningful content, setting `empty` to `true` can help you to hide this `index` itself.
 
 ## Installation
 
