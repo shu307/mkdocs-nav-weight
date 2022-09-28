@@ -42,22 +42,26 @@ class Util():
         for item in items:
             if item.is_page:
                 item.read_source(self._config)
-                # "index": not at top level
-                if item.is_index and item.parent:
-                    self._section_weights[item.parent] = self._get_page_meta(
-                        "weight", 0, Number, item)
-                    # option: "section_renamed"
-                    if self._is_section_renamed:
-                        item.parent.title = item.title
+                # index
+                if item.is_index:
+                    # do nothing if is a top level "index"
+                    if item.parent:
+                        self._section_weights[item.parent] = self._get_page_meta(
+                            "weight", 0, Number, item)
+                        # option: "section_renamed"
+                        if self._is_section_renamed:
+                            item.parent.title = item.title
+                        # check "section_title" only if "section_renamed" is false
+                        elif self._get_page_meta("section_title", False, bool, item):
+                            item.parent.title = item.title
 
-                    if self._get_page_meta("section", False, bool, item):
-                        self._to_delete_items.append(item)
-                    if self._get_page_meta("headless", False, bool, item):
-                        self._to_delete_items.append(item.parent)
-                    # continue
+                        if self._get_page_meta("section", False, bool, item):
+                            self._to_delete_items.append(item)
+                        if self._get_page_meta("headless", False, bool, item):
+                            self._to_delete_items.append(item.parent)
+                # normal page
                 elif self._get_page_meta("headless", False, bool, item):
                     self._to_delete_items.append(item)
-                # continue
 
             elif item.is_section:
                 # for section without index
