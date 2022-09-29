@@ -36,7 +36,10 @@ class Util():
                 return self._index_weight
             return self._get_page_meta("weight", 0, Number, item)
         if item.is_section:
-            return self._section_weights[item]
+            if item in self._section_weights.keys():
+                return self._section_weights[item]
+        # no_index section or link
+        return 0
 
     def _organize_nav(self, items):
         for item in items:
@@ -44,14 +47,13 @@ class Util():
                 item.read_source(self._config)
                 # index
                 if item.is_index:
-                    # do nothing if is a top level "index"
+                    # do nothing if it's a top level "index"
                     if item.parent:
                         self._section_weights[item.parent] = self._get_page_meta(
                             "weight", 0, Number, item)
                         # option: "section_renamed"
                         if self._is_section_renamed:
                             item.parent.title = item.title
-                        # check "section_title" only if "section_renamed" is false
                         elif self._get_page_meta("retitled", False, bool, item):
                             item.parent.title = item.title
 
@@ -64,8 +66,6 @@ class Util():
                     self._to_delete_items.append(item)
 
             elif item.is_section:
-                # for section without index
-                self._section_weights[item] = 0
                 self._organize_nav(item.children)
 
         items.sort(key=self._get_weight, reverse=self._is_reverse)
@@ -82,6 +82,7 @@ class Util():
                 self._connect_pages(item.children)
 
     def _organize_pages(self):
+        # "self._to_delete_items" contains no "link"
         for item in self._to_delete_items:
             if item.is_page:
                 if item.previous_page:
@@ -90,12 +91,13 @@ class Util():
                     item.next_page.previous_page = item.previous_page
                 item.previous_page = None
                 item.next_page = None
+            # it's a section
             else:
                 self._connect_pages(item.children)
                 if self._temp_page:
                     self._temp_page.next_page = None
                     self._temp_page = None
-            # is top level
+            # is top level?
             if item.parent:
                 item.parent.children.remove(item)
             else:
