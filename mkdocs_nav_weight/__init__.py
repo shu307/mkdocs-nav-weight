@@ -13,6 +13,6 @@ class MkDocsNavWeight(mkdocs.plugins.BasePlugin):
     )
 
     def on_nav(self, nav, config, files, **kwargs):
-        util = Util(self.config, nav.items, config)
+        util = Util(self.config, nav.items, nav.pages, config)
         util.set_nav()
         return nav
