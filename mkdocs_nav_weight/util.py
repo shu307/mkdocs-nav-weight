@@ -5,13 +5,14 @@ log = logging.getLogger("mkdocs.plugins")
 
 
 class Util():
-    def __init__(self, plugin_config, nav_items, config) -> None:
+    def __init__(self, plugin_config, nav_items, nav_pages, config) -> None:
         self._is_section_renamed = plugin_config["section_renamed"]
         self._is_reverse = plugin_config["reverse"]
         self._is_warning = plugin_config["warning"]
         self._index_weight = plugin_config["index_weight"]
 
         self._nav_items = nav_items
+        self._nav_pages = nav_pages
         self._config = config
 
         self._section_weights = {}
@@ -108,6 +109,20 @@ class Util():
             self._temp_page.next_page = None
             self._temp_page = None
 
+    def _order_pages(self, items):
+        global_page_order = []
+
+        for item in items:
+            if item.is_page:
+                global_page_order.append(item)
+
+            elif item.is_section:
+                global_page_order.extend(self._order_pages(item.children))
+
+        return global_page_order
+
     def set_nav(self):
         self._organize_nav(self._nav_items)
         self._organize_pages()
+        order = self._order_pages(self._nav_items)
+        self._nav_pages.sort(key=lambda page: order.index(page) if page in order else 9999999999)
