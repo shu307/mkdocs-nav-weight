@@ -84,3 +84,11 @@ Default: `true`:
 Default: `false`:
 
 - If `true`, sort nav by `weight` from largest to smallest.
+
+#### `headless_included`
+
+Default: `false`:
+
+- An option to control whether `headless` pages should be included in `nav.pages` which is used by some plugins, eg: [mkdocs-pdf-export-plugin](https://github.com/zhaoterryy/mkdocs-pdf-export-plugin).
+
+- If `true`, `headless` pages will be included.

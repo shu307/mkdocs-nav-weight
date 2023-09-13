@@ -10,6 +10,7 @@ class MkDocsNavWeight(mkdocs.plugins.BasePlugin):
         ('index_weight', mkdocs.config.config_options.Type(Number, default=-10)),
         ('warning', mkdocs.config.config_options.Type(bool, default=True)),
         ('reverse', mkdocs.config.config_options.Type(bool, default=False)),
+        ('headless_included', mkdocs.config.config_options.Type(bool, default=False)),
     )
 
     def on_nav(self, nav, config, files, **kwargs):
