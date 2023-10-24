@@ -1,16 +1,19 @@
 from numbers import Number
-import mkdocs
+
+from mkdocs.config import config_options
+from mkdocs.plugins import BasePlugin
+
 from mkdocs_nav_weight.util import Util
 
 
-class MkDocsNavWeight(mkdocs.plugins.BasePlugin):
+class MkDocsNavWeight(BasePlugin):
 
     config_scheme = (
-        ('section_renamed', mkdocs.config.config_options.Type(bool, default=False)),
-        ('index_weight', mkdocs.config.config_options.Type(Number, default=-10)),
-        ('warning', mkdocs.config.config_options.Type(bool, default=True)),
-        ('reverse', mkdocs.config.config_options.Type(bool, default=False)),
-        ('headless_included', mkdocs.config.config_options.Type(bool, default=False)),
+        ('section_renamed', config_options.Type(bool, default=False)),
+        ('index_weight', config_options.Type(Number, default=-10)),
+        ('warning', config_options.Type(bool, default=True)),
+        ('reverse', config_options.Type(bool, default=False)),
+        ('headless_included', config_options.Type(bool, default=False)),
     )
 
     def on_nav(self, nav, config, files, **kwargs):
