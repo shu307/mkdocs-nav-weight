@@ -1,22 +1,26 @@
 from numbers import Number
-
 from mkdocs.config import config_options
 from mkdocs.plugins import BasePlugin
+from mkdocs_nav_weight.nav_setter import NavSetter
 
-from mkdocs_nav_weight.util import Util
+# common strings
+SECTION_RENAMED = "section_renamed"
+INDEX_WEIGHT = "index_weight"
+WARNING = "warning"
+REVERSE = "reverse"
+HEADLESS_INCLUDED = "headless_included"
 
 
 class MkDocsNavWeight(BasePlugin):
 
     config_scheme = (
-        ('section_renamed', config_options.Type(bool, default=False)),
-        ('index_weight', config_options.Type(Number, default=-10)),
-        ('warning', config_options.Type(bool, default=True)),
-        ('reverse', config_options.Type(bool, default=False)),
-        ('headless_included', config_options.Type(bool, default=False)),
+        (SECTION_RENAMED, config_options.Type(bool, default=False)),
+        (INDEX_WEIGHT, config_options.Type(Number, default=-10)),
+        (WARNING, config_options.Type(bool, default=True)),
+        (REVERSE, config_options.Type(bool, default=False)),
+        (HEADLESS_INCLUDED, config_options.Type(bool, default=False)),
     )
 
     def on_nav(self, nav, config, files, **kwargs):
-        util = Util(self.config, nav.items, nav.pages, config)
-        util.set_nav()
-        return nav
+        setter = NavSetter(nav, self.config, config)
+        return setter.set_nav()
