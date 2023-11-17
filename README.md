@@ -1,3 +1,4 @@
+[中文](./README_CN.md)
 # mkdocs-nav-weight
 
 **A simple mkdocs plugin, enables to organize Navigation in a more markdownic way.** 
