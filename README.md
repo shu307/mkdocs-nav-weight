@@ -57,6 +57,7 @@ plugins:
       index_weight: -10
       warning: true
       reverse: false
+      headless_included: false
 ```
 
 #### `section_renamed`

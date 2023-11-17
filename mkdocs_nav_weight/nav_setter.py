@@ -150,7 +150,7 @@ class NavSetter():
         elif item.is_section:
             self._pre_connection(item.children)
 
-        # remove item (should set item.parent to None?)
+        # ? remove item (should set item.parent to None?)
         if item.parent:
             item.parent.children.remove(item)
         else:
@@ -187,4 +187,25 @@ class NavSetter():
         if self.is_headless_included:
             self.nav.pages.extend(self._get_nav_pages(self._headless_items))
 
+        # test
+        # self.local_test()
+
         return self.nav
+
+    # ===========================================================================
+    #                            test
+    # ===========================================================================
+    # def local_test(self) -> None:
+    #     for page in self.nav.pages:
+    #         depth = self.get_parent(page, 0)
+    #         depth_indent = "  " * depth
+    #         if page.is_index:
+    #             print(depth_indent + "-"*10)
+    #         print(depth_indent +
+    #               f"Weight: {self._get_weight(page)} / {page}")
+
+    # def get_parent(self, item, count) -> int:
+    #     if item.parent:
+    #         count = count+1
+    #         count = self.get_parent(item.parent, count)
+    #     return count

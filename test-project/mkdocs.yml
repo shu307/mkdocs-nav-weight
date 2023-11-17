@@ -1,0 +1,12 @@
+site_name: My Docs
+# ! Important! Otherwise, mkdocs cannot distinguish files and folders with the same name.
+# ! e.g. "./foo.md" and "./foo/index.md" share the same address "/foo/" if this option is true.
+use_directory_urls: false
+plugins:
+  - search
+  - mkdocs-nav-weight:
+      headless_included: true
+theme:
+  name: material
+  features:
+    - navigation.footer
