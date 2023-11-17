@@ -12,6 +12,7 @@
     - **值: number, 如 `-1`, `2.3` ..., 未设置，则为 `0`**.
     - 类似于 Hugo 中的 weight ，但有一些差异，用于对 section 和 page 排序。  weight 越低，顺序越靠前。
     - **`index` 中的 `weight` 会被提供给其父 `section`**, 其本身有一个可配置的固定值，见: [`index_weight`](#index_weight).
+    - **weight 的作用域只在同文件夹**
 
 - `headless: bool`
     - **值: bool, `true` or `false`, 未设置，则为 `false`**.

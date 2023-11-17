@@ -13,6 +13,7 @@ Four additional keys can be configured in Markdown Metadata ( also known as "fro
     - **Value: number, eg: `-1`, `2.3` ..., if unset, it goes `0`**.
     - like weight in Hugo but has some differences, used for ordering your sections/pages. Lower weight gets higher precedence. So content with lower weight will come first. 
     - **`weight` in an `index` will be offered to its parent `section`**, there is a fixed value for itself, and the value is configurable, see: [`index_weight`](#index_weight).
+    - **For those who are confused, only weights of the items in same folder will be compared**
 
 - `headless: bool`
     - **Value: bool, `true` or `false`, if unset, it goes `false`**.
