@@ -1,8 +1,13 @@
 # mkdocs-nav-weight
 
-**一个简单的 mkdocs 插件，以更 markdown 的方式组织导航。** 
+> [!NOTE]
+>
+> 如果你正在寻找合适的markdown编辑器，或正在使用 [Obsidian](https://obsidian.md/)，那么[这里](https://github.com/shu307/obsidian-nav-weight)有一个功能基本相同的插件。
 
-> **该插件尝试在 mkdocs 之前读取 markdown 资源，会有一些额外性能消耗。**
+
+一个简单的 mkdocs 插件，以更 markdown 的方式组织导航。
+
+该插件尝试在 mkdocs 之前读取 markdown 资源，会有一些额外性能消耗。
 
 ## 使用
 

@@ -1,9 +1,14 @@
 [中文](./README_CN.md)
 # mkdocs-nav-weight
 
-**A simple mkdocs plugin, enables to organize Navigation in a more markdownic way.** 
+> [!NOTE]
+>
+> If you are looking for a suitable Markdown editor, or are using [Obsidian](https://obsidian.md/), then there is a plugin with basically the same functionality available [here](https://github.com/shu307/obsidian-nav-weight).
 
-> **This plugin tries to read markdown resources before mkdocs, which may add some performance overhead on building.**
+
+A simple mkdocs plugin, enables to organize Navigation in a more markdownic way.*
+
+This plugin tries to read markdown resources before mkdocs, which may add some performance overhead on building.
 
 ## Usage
 
