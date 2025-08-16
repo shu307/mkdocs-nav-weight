@@ -66,7 +66,7 @@ class NavSetter():
             # option: "warning"
             elif self.is_warning:
                 log.warning(
-                    f"[mkdocs-nav-weight]: Invaild value for \"{key}\" in {page}, setting to \"{result}\"")
+                    f"[mkdocs-nav-weight]: Invalid value for \"{key}\" in {page}, setting to \"{result}\"")
 
         return result
 
