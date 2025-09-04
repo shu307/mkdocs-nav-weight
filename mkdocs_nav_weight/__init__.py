@@ -9,6 +9,7 @@ INDEX_WEIGHT = "index_weight"
 WARNING = "warning"
 REVERSE = "reverse"
 HEADLESS_INCLUDED = "headless_included"
+DEFAULT_PAGE_WEIGHT = "default_page_weight"
 
 
 class MkDocsNavWeight(BasePlugin):
@@ -19,6 +20,7 @@ class MkDocsNavWeight(BasePlugin):
         (WARNING, config_options.Type(bool, default=True)),
         (REVERSE, config_options.Type(bool, default=False)),
         (HEADLESS_INCLUDED, config_options.Type(bool, default=False)),
+        (DEFAULT_PAGE_WEIGHT, config_options.Type(Number, default=0)),
     )
 
     def on_nav(self, nav, config, files, **kwargs):

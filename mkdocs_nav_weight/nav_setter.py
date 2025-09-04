@@ -15,6 +15,7 @@ WEIGHT = "weight"
 HEADLESS = "headless"
 RETITLED = "retitled"
 EMPTY = "empty"
+DEFAULT_PAGE_WEIGHT = "default_page_weight"
 
 
 class NavSetter():
@@ -32,7 +33,7 @@ class NavSetter():
 
         # utils
         self._meta_defaults = {
-            WEIGHT: 0,
+            WEIGHT: config[DEFAULT_PAGE_WEIGHT],
             HEADLESS: False,
             RETITLED: False,
             EMPTY: False

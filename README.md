@@ -1,44 +1,48 @@
-[中文](./README_CN.md)
 # mkdocs-nav-weight
+
+[中文](./README_CN.md)
 
 > [!NOTE]
 >
 > If you are looking for a suitable Markdown editor, or are using [Obsidian](https://obsidian.md/), then there is a plugin with basically the same functionality available [here](https://github.com/shu307/obsidian-nav-weight).
 
+A simple [MkDocs](https://www.mkdocs.org/) plugin that allows page sorting, section sorting, and page visibility in the navigation to be controlled through additional keywords added to the dds  [Markdown Metadata (or front-matter)](https://www.mkdocs.org/user-guide/writing-your-docs/#meta-data) of your docs.
 
-A simple mkdocs plugin, enables to organize Navigation in a more markdownic way.*
+This plugin emulates functionality found in other static site generators like Hugo and provides a more natural, markdownic way to control the order of your pages in an MkDocs site.  Page order is set using the `weight` keyword which controls the relative order of the doc when compared to other docs in the same folder.
 
-This plugin tries to read markdown resources before mkdocs, which may add some performance overhead on building.
+```yaml
+title: Getting Started - Some Topic
+description: A First Tutorial on Something Important
+weight: 1
+```
+
+A page you want to appear after the page above would have a higher `weight` value.
+
+```yaml
+title: Next Steps - Some Topic
+description: A Second tutorial that needs to come after the first
+weight: 2
+```
+
+Additional keywords (described below) control the visibility of the page in the nav, the name of the section, and the order the sections appear.
+
+This plugin will read the keywords from each markdown file during the build process and therefore may add some performance overhead on building.
 
 ## Usage
 
-Four additional keys can be configured in Markdown Metadata ( also known as "front-matter", see [metadata](https://www.mkdocs.org/user-guide/writing-your-docs/#meta-data)).
+This plugin enables four additional keywords in the [MkDocs Markdown Metadata](https://www.mkdocs.org/user-guide/writing-your-docs/#meta-data).  
 
-- `weight: number`
-    - **Value: number, eg: `-1`, `2.3` ..., if unset, it goes `0`**.
-    - like weight in Hugo but has some differences, used for ordering your sections/pages. Lower weight gets higher precedence. So content with lower weight will come first. 
-    - **`weight` in an `index` will be offered to its parent `section`**, there is a fixed value for itself, and the value is configurable, see: [`index_weight`](#index_weight).
-    - **For those who are confused, only weights of the items in the same folder will be compared**
 
-- `headless: bool`
-    - **Value: bool, `true` or `false`, if unset, it goes `false`**.
-    - like headless in Hugo, pages/sections with `headless: true` will be hidden from nav, but these contents will still be rendered and accessible via URL.
-    - **`headless` in an `index` will be offered to its parent `section`**.
-
-**For `index` only:**
-
-- `retitled: bool`
-    - **Value: bool, `true` or `false`, if unset, it goes `false`**.
-    - A metadata version of [`section_renamed`](#section_renamed) which only applies this `index`'s title to its parent `section`, **it only works when `section_renamed` is `false`**.
-
-- `empty: bool`
-    - **Value: bool, `true` or `false`, if unset, it goes `false`**.
-    - If there is an `index` only used to offer metadata for its parent `section` and without any meaningful content, setting `empty` to `true` can help you to hide this `index` itself.
+| **Keyword**  | **Datatype** | **Default Value**  |**Applies to**         | **Description** |
+|--------------|--------------|--------------------|-----------------------|-----------------|
+| `weight`     | `number`     | `0`                | All markdown files    | Controls the relative order of the page in the folder, with pages sorted from lowest weight to highest. For `index.md` files, this weight is used to order the sections (folders) at the folder level. If the `weight` keyword is not included for a page, it will be assigned a default `weight` of `0` or the value of the `default_page_weight` property set in the `mkdocs.yml` file as described below. |
+| `headless`   | `bool`       | `false`            | All markdown files    | Controls if the page is hidden from the nav.  Pages hidden from the nav are still accessible by directly navigating to the URL.  For index.md files, this keyword controls the visibility of the section (folder) in the nav |
+| `retitled`   | `bool`       | `false`            | `index.md` files only | Indicates that the section should use the `title` value of the `index.md` file rather than the folder name.  This allows you to rename sections into friendlier names that typical directory named.  This option is ignored if the property `section_renamed` is set to `true` in the `mkdocs.yml` file (see below).  In this case, all pages will be retitled using the `title` value in their respective `index.md` file. |
+| `empty`      | `bool`       | `false`            | `index.md` files only | Indicates that the `index.md` file does not contain any content, only metadata.  If set to `true`, the `index.md` file will not appear in the nav and only be used to provide metadata about the section (such as the `weight` and `title` of the section). |
 
 ## Installation
 
 Install with `pip`:
-
 
 ```shell
 pip install mkdocs-nav-weight
@@ -52,7 +56,7 @@ plugins:
   - mkdocs-nav-weight
 ```
 
-## Options
+## Configuration Options
 
 Configure in `mkdocs.yml`:
 
@@ -65,38 +69,14 @@ plugins:
       warning: true
       reverse: false
       headless_included: false
+      default_page_weight: 1000
 ```
 
-#### `section_renamed`
-
-Default: `false`:
-
-- If `true`, section name will use the `title` of its `index` instead of the folder name. 
-
-- For compatibility we have to name a folder like "C#" as "CSharp", but what we actually want is "C#" , that's what this option does
-
-#### `index_weight`
-
-Default: `-10`:
-
-- The `weight` value for `index` itself, to ensure it's always the first at the same level
-
-#### `warning`
-
-Default: `true`:
-
-- Controls whether to send a `Warning` when invalid values are detected in markdown metadata
-
-#### `reverse`
-
-Default: `false`:
-
-- If `true`, sort nav by `weight` from largest to smallest.
-
-#### `headless_included`
-
-Default: `false`:
-
-- An option to control whether `headless` pages should be included in `nav.pages` which is used by some plugins, eg: [mkdocs-pdf-export-plugin](https://github.com/zhaoterryy/mkdocs-pdf-export-plugin).
-
-- If `true`, `headless` pages will be included.
+| **Parameter**        | **Default Value** | **Description**  |
+|----------------------|-------------------|------------------|
+| `section_renamed`    | `false`           | When `true`, the section name will use the `title` of its `index.md` page instead of the folder name.  For example, you may have a folder named `csharp` but want the name of the section to be `C#`.  Setting this parameter to `true` enables this behavior. |
+| `index_weight`       | `-10`             | The `weight` value to use for the `index.md` page to ensure it's always shown first in the folder.  All other pages in the folder should have `weight` values greater than this value (so they will be listed *after* the index.md page). |
+| `default_page_weight` | `0`               | The default weight assigned to each page (when the page does not contain a `weight` value).  If you want pages without a `weight` value to be sorted at the end, set this value to a high number (example: 1000). |
+| `reverse`            | `false`           | By default, pages are sorted from lowest weight value to highest. Setting this value to `true` will sort pages from highest to lowest. |
+| `headless_included`  | `false`           | An option to control whether `headless` pages should be included in `nav.pages` which is used by some plugins, eg: [mkdocs-pdf-export-plugin](https://github.com/zhaoterryy/mkdocs-pdf-export-plugin). |
+| `warning`   | `true` | Controls whether to send a `Warning` when invalid values are detected in markdown metadata. |
