@@ -1,61 +1,75 @@
-# mkdocs-nav-weight
+## mkdocs-nav-weight
 
-> [!NOTE]
->
-> 如果你正在寻找合适的markdown编辑器，或正在使用 [Obsidian](https://obsidian.md/)，那么[这里](https://github.com/shu307/obsidian-nav-weight)有一个功能基本相同的插件。
+这个插件是一个简单的 [MkDocs](https://www.mkdocs.org/) 插件，它允许您通过在文档的 [Markdown 元数据（或 front-matter）](https://www.mkdocs.org/user-guide/writing-your-docs/#meta-data) 中添加额外的关键词来控制页面排序、章节排序和页面在导航栏中的可见性。
 
+该插件模拟了其他静态网站生成器（如 Hugo）中的功能，提供了一种更自然、更“Markdown 化”的方式来控制 MkDocs 网站中页面的顺序。页面顺序通过 `weight` 关键词设置，该关键词控制文档与其所在文件夹中其他文档的相对顺序。
 
-一个简单的 mkdocs 插件，以更 markdown 的方式组织导航。
+**YAML**
 
-该插件尝试在 mkdocs 之前读取 markdown 资源，会有一些额外性能消耗。
+```
+title: 入门 - 某个主题
+description: 关于某个重要事项的第一个教程
+weight: 1
+```
 
-## 使用
+您希望出现在上述页面之后的页面将具有更高的 `weight` 值。
 
-可在 Markdown Metadata ( 也叫 "front-matter", 见 [metadata](https://www.mkdocs.org/user-guide/writing-your-docs/#meta-data)) 中配置的额外4个键值对。
+**YAML**
 
-- `weight: number`
-    - **值: number, 如 `-1`, `2.3` ..., 未设置，则为 `0`**.
-    - 类似于 Hugo 中的 weight ，但有一些差异，用于对 section 和 page 排序。  weight 越低，顺序越靠前。
-    - **`index` 中的 `weight` 会被提供给其父 `section`**, 其本身有一个可配置的固定值，见: [`index_weight`](#index_weight).
-    - **weight 的作用域只在同文件夹**
+```
+title: 后续步骤 - 某个主题
+description: 需要排在第一个教程之后的第二个教程
+weight: 2
+```
 
-- `headless: bool`
-    - **值: bool, `true` or `false`, 未设置，则为 `false`**.
-    - 和 Hugo 中的 headless 一样，带有 `headless: true` 的 page 和 section 将从导航中分离，但仍会被渲染，能通过 URL 访问。
-    - **`index` 中的 `headless` 同样会被提供给其父 `section`**.
+附加关键词（如下所述）控制页面在导航栏中的可见性、章节名称以及章节出现的顺序。
 
-**仅供 `index` :**
+该插件在构建过程中会读取每个 Markdown 文件中的关键词，因此可能会增加一些构建性能开销。
 
-- `retitled: bool`
-    - **值: bool, `true` or `false`, 未设置，则为 `false`**.
-    - 一个 metadata 版本的 [`section_renamed`](#section_renamed), 仅将此 `index`的标题提供给其父 `section`, **只在 `section_renamed` 是 `false` 时起效**.
+---
 
-- `empty: bool`
-    - **值: bool, `true` or `false`, 未设置，则为 `false`**.
-    - 如果此 `index` 仅用于给其父 `section` 提供 metadata, 而没有任何实际内容, 设置 `empty` 为 `true` 将会从导航中分离此 `index` .
+## 用法
+
+该插件在 [MkDocs Markdown 元数据](https://www.mkdocs.org/user-guide/writing-your-docs/#meta-data) 中启用了四个额外的关键词。
+
+| **关键词**    | **数据类型** | **默认值** | **适用范围**          | **描述**                                                                                                                                                                                                                                                                                                     |
+| ---------------- | --------------- | ------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `weight`   | `number`  | `0`     | 所有 Markdown 文件     | 控制页面在文件夹中的相对顺序，页面按权重从低到高排序。对于`index.md`文件，其权重用于控制章节（文件夹）的排序。如果页面不包含`weight`关键词，它将被赋予默认值`0`，或者`mkdocs.yml`文件中`default_page_weight`属性设置的值（如下所述）。                                                    |
+| `headless` | `bool`    | `false` | 所有 Markdown 文件     | 控制页面是否在导航栏中隐藏。隐藏的页面仍然可以通过直接访问其 URL 来访问。对于`index.md`文件，该关键词控制章节（文件夹）在导航栏中的可见性。                                                                                                                                                               |
+| `retitled` | `bool`    | `false` | 仅限`index.md`文件 | 表示章节应使用`index.md`文件中的`title`值，而不是文件夹名称。这允许您将章节重命名为比典型目录名更友好的名称。如果`mkdocs.yml`文件中的`section_renamed`属性（如下所述）设置为`true`，则此选项将被忽略。在这种情况下，所有页面都将使用其各自`index.md`文件中的`title`值进行重命名。 |
+| `empty`    | `bool`    | `false` | 仅限`index.md`文件 | 表示`index.md`文件不包含任何内容，只有元数据。如果设置为`true`，`index.md`文件将不会出现在导航栏中，仅用于提供章节元数据（例如章节的`weight`和`title`）。                                                                                                                                 |
+
+---
 
 ## 安装
 
-使用 `pip` 安装:
+使用 `pip` 进行安装：
 
+**Shell**
 
-```shell
+```
 pip install mkdocs-nav-weight
 ```
 
-添加下列行到 `mkdocs.yml`
+将以下几行添加到 `mkdocs.yml` 中：
 
-```yaml
+**YAML**
+
+```
 plugins:
   - search
   - mkdocs-nav-weight
 ```
 
-## 选项
+---
 
-在 `mkdocs.yml` 中配置:
+## 配置选项
 
-```yaml
+在 `mkdocs.yml` 中进行配置：
+
+**YAML**
+
+```
 plugins:
   - search
   - mkdocs-nav-weight:
@@ -64,38 +78,14 @@ plugins:
       warning: true
       reverse: false
       headless_included: false
+      default_page_weight: 1000
 ```
 
-#### `section_renamed`
-
-默认: `false`:
-
-- 如果为 `true`, section 会使用其子 `index` 的 `title` 而不是文件夹名. 
-
-- 出于兼容性，我们无法使用类似 "C#" 的包含url非法字符的文件夹命名，而只能采取一些不太和谐的命名，该选项用于覆盖所有 `section` 的标题(文件夹名).
-
-#### `index_weight`
-
-默认: `-10`:
-
-- `index` 自身的 `weight`，确保其位于同级别首位(或末位?).
-
-#### `warning`
-
-默认: `true`:
-
-- 检测到 metadata 值类型不正确时，是否发送警告
-
-#### `reverse`
-
-默认: `false`:
-
-- 如果设置为 `true`, 排序时 `weight` 越大越靠前.
-
-#### `headless_included`
-
-默认: `false`:
-
-- 控制 `headless` 是否应被包含在 `nav.pages` 中，此列表被一些插件使用, 如: [mkdocs-pdf-export-plugin](https://github.com/zhaoterryy/mkdocs-pdf-export-plugin).
-
-- 如果设置为 `true`,  `nav.pages` 将会包含 `headless` 页面.
+| **参数**                 | **默认值** | **描述**                                                                                                                                                                                           |
+| --------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `section_renamed`     | `false` | 当为`true`时，章节名称将使用其`index.md`页面的`title`，而不是文件夹名称。例如，您可能有一个名为`csharp`的文件夹，但希望章节名称为`C#`。将此参数设置为`true`即可启用此行为。 |
+| `index_weight`        | `-10`   | 用于`index.md`页面的`weight`值，以确保它始终在文件夹中排在首位。文件夹中的所有其他页面都应具有大于此值的`weight`值（以便它们在`index.md`页面之后列出）。                            |
+| `default_page_weight` | `0`     | 分配给每个页面的默认权重（当页面不包含`weight`值时）。如果您希望没有`weight`值的页面排在最后，请将此值设置为一个较大的数字（例如：1000）。                                                  |
+| `reverse`             | `false` | 默认情况下，页面按权重值从低到高排序。将此值设置为`true`将按从高到低的顺序排序。                                                                                                                |
+| `headless_included`   | `false` | 一个选项，用于控制是否应将`headless`页面包含在`nav.pages`中，该属性供一些插件使用，例如：[mkdocs-pdf-export-plugin](https://github.com/zhaoterryy/mkdocs-pdf-export-plugin)。                  |
+| `warning`             | `true`  | 控制当在 Markdown 元数据中检测到无效值时是否发送`Warning`警告。                                                                                                                                 |

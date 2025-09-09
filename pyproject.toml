@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=77.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mkdocs-nav-weight"
+version = "0.3.0"
+authors = [{ name = "shu307", email = "shu307@qq.com" }]
+description = "A simple mkdocs plugin, enables to organize Navigation in a more markdownic way."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.7"
+dependencies = ["mkdocs>=1"]
+
+[project.urls]
+Homepage = "https://github.com/shu307/mkdocs-nav-weight"
+
+[project.entry-points."mkdocs.plugins"]
+mkdocs-nav-weight = "mkdocs_nav_weight:MkDocsNavWeight"

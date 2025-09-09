@@ -6,6 +6,7 @@ plugins:
   - search
   - mkdocs-nav-weight:
       headless_included: true
+      default_page_weight: 1000
 theme:
   name: material
   features:

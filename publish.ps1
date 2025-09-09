@@ -1,7 +1,7 @@
-rm -r -fo .\dist\*
-"Dist to ./dist ?"
+Remove-Item -r -fo .\dist\*
+"Dist ?"
 pause
-python setup.py sdist bdist_wheel
+python -m build
 "Upload ?"
 pause
 python -m twine upload .\dist\*
